@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head()"></head>
+
+<body>
+<div th:each="book : ${bookList}">
+    <a th:text="${book.getTitle()}+', '+${book.getAuthor()} +', '+ ${book.getYear()}"
+       th:href="@{/books/{id}(id=${book.getId()})}">
+        Book value</a>
+</div>
+<hr>
+<a th:href="@{/books/new}">Додати нову книгу</a>
+</body>
+</html>
