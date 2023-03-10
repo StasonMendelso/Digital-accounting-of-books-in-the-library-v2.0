@@ -1,5 +1,6 @@
 package org.stanislav.models;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,8 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -30,6 +34,13 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
+
+    @Column(name = "taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date takenAt;
+
+    @Transient
+    private boolean expired;
 
     public Book() {
     }
@@ -81,6 +92,22 @@ public class Book {
         this.owner = owner;
     }
 
+    public Date getTakenAt() {
+        return takenAt;
+    }
+
+    public void setTakenAt(Date takenAt) {
+        this.takenAt = takenAt;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,9 +117,11 @@ public class Book {
 
         if (id != book.id) return false;
         if (year != book.year) return false;
+        if (expired != book.expired) return false;
         if (!Objects.equals(title, book.title)) return false;
         if (!Objects.equals(author, book.author)) return false;
-        return Objects.equals(owner, book.owner);
+        if (!Objects.equals(owner, book.owner)) return false;
+        return Objects.equals(takenAt, book.takenAt);
     }
 
     @Override
@@ -102,6 +131,8 @@ public class Book {
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + year;
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (takenAt != null ? takenAt.hashCode() : 0);
+        result = 31 * result + (expired ? 1 : 0);
         return result;
     }
 
@@ -112,6 +143,8 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +
+                ", takenAt=" + takenAt +
+                ", expired=" + expired +
                 '}';
     }
 }

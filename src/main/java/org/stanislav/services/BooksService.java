@@ -9,6 +9,7 @@ import org.stanislav.models.Book;
 import org.stanislav.models.Person;
 import org.stanislav.repositories.BooksRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,13 +63,19 @@ public class BooksService {
     @Transactional
     public void release(int id) {
         Optional<Book> book = booksRepository.findById(id);
-        book.ifPresent(value -> value.setOwner(null));
+        book.ifPresent(value -> {
+            value.setOwner(null);
+            value.setTakenAt(null);
+        });
     }
 
     @Transactional
     public void assign(int id, Person person) {
         Optional<Book> book = booksRepository.findById(id);
-        book.ifPresent(value -> value.setOwner(person));
+        book.ifPresent(value -> {
+            value.setOwner(person);
+            value.setTakenAt(new Date());
+        });
     }
 
     public List<Book> searchByTitleStartingWith(String query) {
