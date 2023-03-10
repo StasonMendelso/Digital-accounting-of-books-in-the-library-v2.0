@@ -9,6 +9,7 @@ import org.stanislav.models.Person;
 import org.stanislav.repositories.PeopleRepository;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,8 +57,16 @@ public class PeopleService {
     public List<Book> getBooksByPersonId(int id) {
         Optional<Person> person = peopleRepository.findById(id);
 
-        if(person.isPresent()){
+        if (person.isPresent()) {
             Hibernate.initialize(person.get().getBookList());
+
+            person.get().getBookList().forEach(book -> {
+                Date takenAt = book.getTakenAt();
+                if (takenAt != null && Math.abs(takenAt.getTime() - new Date().getTime()) > 864000000) {
+                    book.setExpired(true);
+                }
+            });
+
             return person.get().getBookList();
         }
         return Collections.emptyList();
