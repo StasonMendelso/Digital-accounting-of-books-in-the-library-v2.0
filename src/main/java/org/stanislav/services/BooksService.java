@@ -1,6 +1,9 @@
 package org.stanislav.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.stanislav.models.Book;
@@ -23,8 +26,18 @@ public class BooksService {
         this.booksRepository = booksRepository;
     }
 
-    public List<Book> getAllBooks() {
+    public List<Book> getAllBooks(boolean sortByYear) {
+        if (sortByYear) {
+            return booksRepository.findAll(Sort.by("year"));
+        }
         return booksRepository.findAll();
+    }
+
+    public List<Book> getPaginatedBooks(Integer page, Integer booksPerPage, boolean sortByYear) {
+        if (sortByYear) {
+            return booksRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by(Sort.Order.asc("year")))).getContent();
+        }
+        return booksRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
     }
 
     public Book getBook(int id) {
@@ -52,8 +65,9 @@ public class BooksService {
         Optional<Book> book = booksRepository.findById(id);
         book.ifPresent(value -> value.setOwner(null));
     }
+
     @Transactional
-    public void assign(int id, Person person){
+    public void assign(int id, Person person) {
         Optional<Book> book = booksRepository.findById(id);
         book.ifPresent(value -> value.setOwner(person));
     }
