@@ -6,17 +6,18 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.stanislav.dao.PersonDao;
 import org.stanislav.models.Person;
+import org.stanislav.services.PeopleService;
 
 /**
  * @author Stanislav Hlova
  */
 @Component
 public class PersonValidator implements Validator {
-    private final PersonDao personDao;
+    private final PeopleService peopleService;
 
     @Autowired
-    public PersonValidator(PersonDao personDao) {
-        this.personDao = personDao;
+    public PersonValidator(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
     @Override
@@ -28,8 +29,8 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
-        if (personDao.readByFullName(person.getFullName()).isPresent()) {
-            errors.rejectValue("fullName", "","Користувач з таким ПІБ вже є. Виберіть інший.");
+        if (peopleService.findByFullName(person.getFullName()) != null) {
+            errors.rejectValue("fullName", "", "Користувач з таким ПІБ вже є. Виберіть інший.");
         }
     }
 }

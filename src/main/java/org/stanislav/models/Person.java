@@ -1,15 +1,32 @@
 package org.stanislav.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * @author Stanislav Hlova
  */
+@Entity
+@Table(name = "person")
 public class Person {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "full_name")
     private String fullName;
+    @Column(name = "year_of_birth")
     private int yearOfBirth;
-
+    @OneToMany(mappedBy = "owner")
+    private List<Book> bookList;
     public Person() {
     }
 
@@ -43,6 +60,14 @@ public class Person {
         this.yearOfBirth = yearOfBirth;
     }
 
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,7 +77,8 @@ public class Person {
 
         if (id != person.id) return false;
         if (yearOfBirth != person.yearOfBirth) return false;
-        return Objects.equals(fullName, person.fullName);
+        if (!Objects.equals(fullName, person.fullName)) return false;
+        return Objects.equals(bookList, person.bookList);
     }
 
     @Override
@@ -60,6 +86,7 @@ public class Person {
         int result = id;
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         result = 31 * result + yearOfBirth;
+        result = 31 * result + (bookList != null ? bookList.hashCode() : 0);
         return result;
     }
 

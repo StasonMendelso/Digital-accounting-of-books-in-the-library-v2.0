@@ -1,15 +1,35 @@
 package org.stanislav.models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
 /**
  * @author Stanislav Hlova
  */
+@Entity
+@Table(name = "book")
 public class Book {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "author")
     private String author;
+    @Column(name = "year")
     private int year;
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    private Person owner;
 
     public Book() {
     }
@@ -53,6 +73,14 @@ public class Book {
         this.year = year;
     }
 
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,7 +91,8 @@ public class Book {
         if (id != book.id) return false;
         if (year != book.year) return false;
         if (!Objects.equals(title, book.title)) return false;
-        return Objects.equals(author, book.author);
+        if (!Objects.equals(author, book.author)) return false;
+        return Objects.equals(owner, book.owner);
     }
 
     @Override
@@ -72,6 +101,7 @@ public class Book {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + year;
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
         return result;
     }
 
