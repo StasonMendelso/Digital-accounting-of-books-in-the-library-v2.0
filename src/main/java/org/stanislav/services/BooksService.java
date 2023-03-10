@@ -57,4 +57,8 @@ public class BooksService {
         Optional<Book> book = booksRepository.findById(id);
         book.ifPresent(value -> value.setOwner(person));
     }
+
+    public List<Book> searchByTitleStartingWith(String query) {
+        return booksRepository.findByTitleStartingWith(query);
+    }
 }

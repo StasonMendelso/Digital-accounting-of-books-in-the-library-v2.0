@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.stanislav.dao.BookDao;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.stanislav.forms.book.AddBookForm;
 import org.stanislav.forms.book.EditBookForm;
 import org.stanislav.models.Book;
@@ -20,7 +20,7 @@ import org.stanislav.services.BooksService;
 import org.stanislav.services.PeopleService;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.Collections;
 
 /**
  * @author Stanislav Hlova
@@ -108,5 +108,20 @@ public class BooksController {
                              @ModelAttribute("person") Person person) {
         booksService.assign(id, person);
         return "redirect:/books/" + id;
+    }
+
+    @GetMapping("/search")
+    public String searchBook(@RequestParam(value = "query", required = false) String query,
+                             Model model) {
+        if (query == null) {
+            return "books/search";
+        }
+        if (query.isBlank()){
+            model.addAttribute("foundedBooks", Collections.emptyList());
+            return "books/search";
+        }
+        model.addAttribute("query",query);
+        model.addAttribute("foundedBooks", booksService.searchByTitleStartingWith(query));
+        return "books/search";
     }
 }
