@@ -2,7 +2,6 @@ package org.stanislav.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,5 +69,9 @@ public class BooksService {
     public void assign(int id, Person person) {
         Optional<Book> book = booksRepository.findById(id);
         book.ifPresent(value -> value.setOwner(person));
+    }
+
+    public List<Book> searchByTitleStartingWith(String query) {
+        return booksRepository.findByTitleStartingWith(query);
     }
 }
