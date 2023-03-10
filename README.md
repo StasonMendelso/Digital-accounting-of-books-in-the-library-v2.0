@@ -94,6 +94,14 @@ which must be renamed to "*database.properties*" instead of "*database.propertie
 contains only keys for configuration the database, so you can put your values to the file and run
 application with this database configuration.
 
+##### Hibernate configuration
+
+If you want to make some changes in Hibernate configuration, you must edit values
+in [hibernate.properties file](src/main/resources/hibernate.properties).
+If you want to add some more properties you must write additional java code
+in [configuration class](src/main/java/org/stanislav/config/SpringConfig.java).
+
+
 ##### Server configuration
 
 For running the code you need install the Tomcat and configure it
