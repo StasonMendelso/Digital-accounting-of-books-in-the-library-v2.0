@@ -27,7 +27,6 @@ the database and connection to it. Follow the next chapters.
 
 For running the project you need the next:
 
-* [Tomcat 9.0.60](https://tomcat.apache.org/) - for running the Spring MVC application part.
 * [PostgreSQL 15](https://www.postgresql.org/) - for running the app with database. Also you can use another database.
   You can find the [script](database/dump.sql) of creating database in directory with name "*[database](database)*".
 
@@ -60,7 +59,7 @@ For downloading the project locally you can use two variants:
        $ git remote add origin git@github.com:StasonMendelso/Digital-accounting-of-books-in-the-library-v2.0.git
        ```
        But you need configure your SSH connection to your GitHub profile in Git Bash. See more [here][7].
-            
+
        For viewing that the repository has been added successfully to your local
        repository, you need execute the next command and get the following result:
        ```
@@ -80,45 +79,43 @@ For downloading the project locally you can use two variants:
        changes are observed by the `git` and you can always make a rollback of
        all changes `git reset --hard`.
 
-#### What things you need to install the software and how to install them?
+#### What things you need to install the software and how to configure them?
 
 ##### Database configuration
 
 For running the database you can use as me PostgreSQL or create your own database on another SQL server
-using the [script](database/dump.sql) file of creating the database. **Note**: if you use another server not such
-PostgreSQL you should change JDBC driver for working with it and configurate the connection to your
-server in appropriate property file, which you must create manually.
+using the [script](database/dump.sql) file of creating the database. 
 <br>
-You can find an empty [database configuration file](src/main/resources/database.properties.origin),
-which must be renamed to "*database.properties*" instead of "*database.properties.origin*". This file
-contains only keys for configuration the database, so you can put your values to the file and run
-application with this database configuration.
-
-##### Hibernate configuration
-
-If you want to make some changes in Hibernate configuration, you must edit values
-in [hibernate.properties file](src/main/resources/hibernate.properties).
-If you want to add some more properties you must write additional java code
-in [configuration class](src/main/java/org/stanislav/config/SpringConfig.java).
-
+**Note**: if you use another server not such
+PostgreSQL you should change JDBC driver for working with it and configurate the connection to your
+server in appropriate property file, which you must create manually. If you change driver, you should 
+make some changes in [pom.xml file](pom.xml)
+<br>
 
 ##### Server configuration
 
-For running the code you need install the Tomcat and configure it
-in your idea. If you use the Intellij IDEA you can click on **Run** button and choose **Edit configuration**,
-then add configuration for Tomcat server. Almost all configuration of app must be added
-automatically, but check it before running. You can see
-official [guide](https://www.youtube.com/watch?v=ThBw3WBTw9Q&ab_channel=IntelliJIDEAbyJetBrains).
-After configuration, you can press run button of the server and go to browser to check the application work.
+For running the code you needn't install server and configure it, because the Spring Boot starter
+makes it instead of you using the pom.xml.
+
+### Running the web-app
+You can find an empty [application configuration file](src/main/resources/application.properties.origin),
+which must be renamed to "*application.properties*" instead of "*application.properties.origin*". This file
+contains only keys for configuration the application using the Spring Boot, so you can put your values to the file and run
+application with this application configuration. You can find more about configuration of Spring Boot application on
+the Internet.
+<br>
+For running the app on the server you need only run the main method in Java class. Also, you can
+package app to the jar file and deploy the file on the server manually.
 
 ## Examples of web-application's pages. Endpoints.
 
 If you want to open them in browser you need to enter one of the two URL:
+
 * "**localhost:{port}/{applicationContext}/people**" - to open a page with all peoples;
 * "**localhost:{port}/{applicationContext}/books**" - to open a page with all books,
 
 where  **{port}** - is a port, on which you server is running; **{applicationContext}** - is an application
-context name, which you give in your server configuration for this app.
+context name, which you give in your application configuration for this app.
 
 Here you can find the screenshots of the web-application:
 
@@ -153,9 +150,15 @@ You can find more photos [here](images/web-application-examples).
 * **Stanislav Hlova** - *All work* - [StasonMendelso](https://github.com/StasonMendelso)
 
 [1]:https://www.udemy.com/course/spring-alishev/
+
 [2]:https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
+
 [3]:https://en.wikipedia.org/wiki/Java_Database_Connectivity
+
 [4]:https://git-scm.com/downloads
+
 [5]:https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git
+
 [6]:https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address
+
 [7]:https://docs.github.com/en/authentication/connecting-to-github-with-ssh

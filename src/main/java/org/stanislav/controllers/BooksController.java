@@ -1,5 +1,6 @@
 package org.stanislav.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import org.stanislav.models.Person;
 import org.stanislav.services.BooksService;
 import org.stanislav.services.PeopleService;
 
-import javax.validation.Valid;
 import java.util.Collections;
 
 /**
